@@ -3,5 +3,16 @@ package ccpetrov01.CarClientShop.repository;
 import ccpetrov01.CarClientShop.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface ProductRepository extends JpaRepository<Product , Long> {
+
+    List<Product> findByName(String name);
+
+    List<Product> findByBrandAndName(String brand, String name);
+
+    List<Product> findByCategoryName(String Category);
+    List<Product> findByBrand(String brand);
+
+    Boolean existsByBrandAndName(String brand, String name);
 }
