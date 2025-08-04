@@ -67,10 +67,13 @@ public class ProductController {
             return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(),null));
         }
     }
-    @GetMapping("/product/get-by-name")
-    public ResponseEntity<ApiResponse> getProductsByName(@RequestBody String name){
+    @GetMapping("/product/{name}/get-by-name")
+    public ResponseEntity<ApiResponse> getProductsByName(@PathVariable String name){
         try{
             List<Product> product = productService.getProductsByName(name);
+            if (product.isEmpty()) {
+                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No products found ", null));
+            }
             List<ProductDtoView> productDtoView = productService.convertToDtoViewList(product);
             return ResponseEntity.ok(new ApiResponse("Successfully getting the product!", productDtoView));
         }catch(ResourceNotFoundException e){
@@ -79,9 +82,12 @@ public class ProductController {
     }
 
     @GetMapping("/product/get-by-name-and-brand")
-    public ResponseEntity<ApiResponse> getProductsByBrandAndName(@RequestBody String name , @RequestBody String brand){
+    public ResponseEntity<ApiResponse> getProductsByBrandAndName(@RequestParam String name , @RequestParam String brand){
         try{
             List<Product> product = productService.getProductsByBrandAndName(brand, name);
+            if (product.isEmpty()) {
+                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No products found ", null));
+            }
             List<ProductDtoView> productDtoView = productService.convertToDtoViewList(product);
             return ResponseEntity.ok(new ApiResponse("Successfully getting the product!", productDtoView));
         }catch(ResourceNotFoundException e){
@@ -89,23 +95,29 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/product/get-by-category")
-    public ResponseEntity<ApiResponse> getByCategoryName(@RequestBody String category){
+    @GetMapping("/product/{category}/get-by-category")
+    public ResponseEntity<ApiResponse> getByCategoryName(@PathVariable String category){
         try{
             List<Product> product = productService.getByCategoryName(category);
+            if (product.isEmpty()) {
+                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No category found ", null));
+            }
             List<ProductDtoView> productDtoView = productService.convertToDtoViewList(product);
-            return ResponseEntity.ok(new ApiResponse("Successfully getting the product!", productDtoView));
+            return ResponseEntity.ok(new ApiResponse("Successfully getting the category!", productDtoView));
         }catch(ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Product with this category doesn't exists!",null));
         }
     }
 
-    @GetMapping("/product/get-by-brand")
-    public ResponseEntity<ApiResponse> getByBrand(@RequestBody String brand){
+    @GetMapping("/product/{brand}/get-by-brand")
+    public ResponseEntity<ApiResponse> getByBrand(@PathVariable String brand){
         try{
             List<Product> product = productService.getByBrand(brand);
+            if (product.isEmpty()) {
+                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No brand found ", null));
+            }
             List<ProductDtoView> productDtoView = productService.convertToDtoViewList(product);
-            return ResponseEntity.ok(new ApiResponse("Successfully getting the product!", productDtoView));
+            return ResponseEntity.ok(new ApiResponse("Successfully getting the brand!", productDtoView));
         }catch(ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("Product with this brand doesn't exists!",null));
         }
