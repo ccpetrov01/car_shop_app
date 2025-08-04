@@ -1,11 +1,10 @@
 package ccpetrov01.CarClientShop.services.category;
 
+import ccpetrov01.CarClientShop.DtoViews.CategoryViewDto;
 import ccpetrov01.CarClientShop.exceptions.AlreadyExistsException;
 import ccpetrov01.CarClientShop.exceptions.ResourceNotFoundException;
 import ccpetrov01.CarClientShop.models.Category;
-import ccpetrov01.CarClientShop.models.Product;
 import ccpetrov01.CarClientShop.repository.CategoryRepository;
-import ccpetrov01.CarClientShop.requests.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +57,16 @@ public class CategoryService implements ICategoryService{
                 .filter(existingCategory -> !categoryRepository.existByName(existingCategory.getName()))
                 .map(categoryRepository::save)
                 .orElseThrow(() -> new AlreadyExistsException("Category with this name already exists!"));
+    }
+
+    @Override
+    public CategoryViewDto convertToDtoView(Category category) {
+        CategoryViewDto dto = new CategoryViewDto();
+        dto.setName(category.getName());
+        return dto;
+    }
+    @Override
+    public List<CategoryViewDto> convertToDtoViewList(List<Category> category) {
+        return category.stream().map(this::convertToDtoView).toList();
     }
 }
