@@ -1,5 +1,6 @@
 package ccpetrov01.CarClientShop.requests;
 
+import ccpetrov01.CarClientShop.DtoViews.CategoryViewDto;
 import ccpetrov01.CarClientShop.models.Category;
 import lombok.Data;
 
@@ -12,6 +13,6 @@ public class AddProductRequest {
     private BigDecimal price;
     private int inventory;
     private String description;
-    private Category category;
+    private CategoryViewDto category;
 
 }

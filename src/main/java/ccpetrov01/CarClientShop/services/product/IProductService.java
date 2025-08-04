@@ -1,5 +1,6 @@
 package ccpetrov01.CarClientShop.services.product;
 
+import ccpetrov01.CarClientShop.DtoViews.ProductDtoView;
 import ccpetrov01.CarClientShop.models.Product;
 import ccpetrov01.CarClientShop.requests.AddProductRequest;
 import ccpetrov01.CarClientShop.requests.UpdateProductRequest;
@@ -22,4 +23,7 @@ public interface IProductService {
     List<Product> getByCategoryName(String Category);
     List<Product> getByBrand(String brand);
 
+    ProductDtoView convertToDtoView(Product product);
+
+    List<ProductDtoView> convertToDtoViewList(List<Product> products);
 }

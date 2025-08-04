@@ -11,7 +11,7 @@ public interface ProductRepository extends JpaRepository<Product , Long> {
 
     List<Product> findByBrandAndName(String brand, String name);
 
-    List<Product> findByCategoryName(String Category);
+    List<Product> findByCategoryName(String category);
     List<Product> findByBrand(String brand);
 
     Boolean existsByBrandAndName(String brand, String name);

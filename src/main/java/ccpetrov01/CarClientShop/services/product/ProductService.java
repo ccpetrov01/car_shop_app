@@ -1,17 +1,17 @@
 package ccpetrov01.CarClientShop.services.product;
 
+import ccpetrov01.CarClientShop.DtoViews.CategoryViewDto;
+import ccpetrov01.CarClientShop.DtoViews.ProductDtoView;
 import ccpetrov01.CarClientShop.exceptions.AlreadyExistsException;
 import ccpetrov01.CarClientShop.exceptions.ResourceNotFoundException;
 import ccpetrov01.CarClientShop.models.Category;
 import ccpetrov01.CarClientShop.models.Product;
 import ccpetrov01.CarClientShop.repository.CategoryRepository;
-import ccpetrov01.CarClientShop.repository.ProductImageRepository;
 import ccpetrov01.CarClientShop.repository.ProductRepository;
 import ccpetrov01.CarClientShop.requests.AddProductRequest;
 import ccpetrov01.CarClientShop.requests.UpdateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -21,20 +21,18 @@ public class ProductService implements IProductService{
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final ProductImageRepository productImageRepository;
     @Override
     public Product addProduct(AddProductRequest request) {
         if(productExists(request.getName(), request.getBrand())){
             throw new AlreadyExistsException(
                     request.getName() + " " + request.getBrand() + " Already Exists, You May Update This Product Instead.");
         }
-
+        String categoryName = request.getCategory().getName();
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(()-> {
-                    Category newCategory = new Category(request.getCategory().getName());
+                    Category newCategory = new Category(categoryName);
                     return categoryRepository.save(newCategory);
                 });
-        request.setCategory(category);
         return productRepository.save(createProduct(request, category));
     }
 
@@ -81,8 +79,6 @@ public class ProductService implements IProductService{
         existingProduct.setCategory(category);
 
         return existingProduct;
-
-
     }
 
     @Override
@@ -109,4 +105,26 @@ public class ProductService implements IProductService{
     public List<Product> getByBrand(String brand) {
         return productRepository.findByBrand(brand);
     }
+    @Override
+    public ProductDtoView convertToDtoView(Product product) {
+        ProductDtoView dto = new ProductDtoView();
+        dto.setName(product.getName());
+        dto.setBrand(product.getBrand());
+        dto.setDescription(product.getDescription());
+        dto.setPrice(product.getPrice());
+
+        CategoryViewDto categoryDto = new CategoryViewDto();
+        categoryDto.setName(product.getCategory().getName());
+
+        dto.setCategory(categoryDto);
+        return dto;
+    }
+    @Override
+    public List<ProductDtoView> convertToDtoViewList(List<Product> products) {
+        return products.stream().map(this::convertToDtoView).toList();
+    }
+
+
+
+
 }
