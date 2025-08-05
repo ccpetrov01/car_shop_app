@@ -17,4 +17,7 @@ public interface IImageService {
 
     void updateImage(MultipartFile image, Long imageId);
 
+    ImageDtoView convertToDtoView(ProductImage image);
+
+    List<ImageDtoView> convertToDtoViewList(List<ProductImage> image);
 }

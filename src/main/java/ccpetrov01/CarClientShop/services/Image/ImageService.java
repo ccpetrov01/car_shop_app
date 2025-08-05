@@ -10,12 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
-import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ImageService implements IImageService{
@@ -79,5 +77,17 @@ public class ImageService implements IImageService{
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public ImageDtoView convertToDtoView(ProductImage image) {
+        ImageDtoView dto = new ImageDtoView();
+        dto.setFileName(image.getFileName());
+        dto.setDownloadUrl(image.getDownloadUrl());
+        return dto;
+    }
+    @Override
+    public List<ImageDtoView> convertToDtoViewList(List<ProductImage> image) {
+        return image.stream().map(this::convertToDtoView).toList();
     }
 }
