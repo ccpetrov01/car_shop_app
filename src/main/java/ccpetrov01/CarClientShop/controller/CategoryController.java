@@ -1,12 +1,9 @@
 package ccpetrov01.CarClientShop.controller;
 
 import ccpetrov01.CarClientShop.DtoViews.CategoryViewDto;
-import ccpetrov01.CarClientShop.DtoViews.ProductDtoView;
 import ccpetrov01.CarClientShop.exceptions.AlreadyExistsException;
 import ccpetrov01.CarClientShop.exceptions.ResourceNotFoundException;
 import ccpetrov01.CarClientShop.models.Category;
-import ccpetrov01.CarClientShop.models.Product;
-import ccpetrov01.CarClientShop.requests.UpdateProductRequest;
 import ccpetrov01.CarClientShop.responses.ApiResponse;
 import ccpetrov01.CarClientShop.services.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +39,7 @@ public class CategoryController {
         }
     }
 
-    @PutMapping("/category/{category_id/update")
+    @PutMapping("/category/{category_id}/update")
     public ResponseEntity<ApiResponse> updateProduct(@RequestBody Category request, @PathVariable Long category_id){
         try{
             Category category = categoryService.updateCategoryById(request, category_id);

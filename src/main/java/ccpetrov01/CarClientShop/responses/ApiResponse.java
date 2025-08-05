@@ -1,11 +1,17 @@
 package ccpetrov01.CarClientShop.responses;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ApiResponse {
-    private String massage;
+    private String message;
     private Object data;
+
+
 }
+

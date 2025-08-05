@@ -47,7 +47,7 @@ public class ProductController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
-    @PutMapping("/product/{product_id/update")
+    @PutMapping("/product/{product_id}/update")
     public ResponseEntity<ApiResponse> updateProduct(@RequestBody UpdateProductRequest request, @PathVariable Long product_id){
         try{
             Product product = productService.updateProduct(request, product_id);
